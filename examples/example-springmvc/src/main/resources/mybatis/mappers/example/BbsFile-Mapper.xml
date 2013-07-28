@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jpl.garage.example.springmvc.dao.example.BbsFileDao">
+
+	<resultMap id="bbsFileResult" type="BbsFileBean">
+		<id property="bbsId" column="S_BBS_ID" javaType="java.lang.String"/>
+		<id property="bbsIdx" column="I_BBS_IDX" javaType="int"/>
+		<id property="fileIdx" column="I_FILE_IDX" javaType="int"/>
+		<result property="localFilepaht" column="S_LOCAL_FILEPAHT" javaType="java.lang.String"/>
+		<result property="serverFilename" column="S_SERVER_FILENAME" javaType="java.lang.String"/>
+		<result property="serverPath" column="S_SERVER_PATH" javaType="java.lang.String"/>
+		<result property="fileType" column="S_FILE_TYPE" javaType="java.lang.String"/>
+		<result property="thumbYn" column="C_THUMB_YN" javaType="java.lang.String"/>
+		<result property="majorYn" column="C_MAJOR_YN" javaType="java.lang.String"/>
+	</resultMap>
+
+	<select id="getBbsFileList" parameterType="BbsFileBean" resultMap="bbsFileResult">
+	<!-- bbs_file 의 목록 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_FILE_IDX,
+			   S_LOCAL_FILEPAHT,
+			   S_SERVER_FILENAME,
+			   S_SERVER_PATH,
+			   S_FILE_TYPE,
+			   C_THUMB_YN,
+			   C_MAJOR_YN
+		  FROM bbs_file
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="fileIdx != null and fileIdx != ''">
+				AND I_FILE_IDX = #{fileIdx}
+			</if>
+		</where>
+	</select>
+    
+	<select id="getBbsFileItem" parameterType="BbsFileBean" resultMap="bbsFileResult">
+	<!-- bbs_file 의 상세 내역 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_FILE_IDX,
+			   S_LOCAL_FILEPAHT,
+			   S_SERVER_FILENAME,
+			   S_SERVER_PATH,
+			   S_FILE_TYPE,
+			   C_THUMB_YN,
+			   C_MAJOR_YN
+		  FROM bbs_file
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="fileIdx != null and fileIdx != ''">
+				AND I_FILE_IDX = #{fileIdx}
+			</if>
+		</where>
+	</select>
+    
+	<insert id="insertBbsFile" parameterType="BbsFileBean">
+	<!-- bbs_file 의 신규 등록 -->
+		INSERT INTO bbs_file (
+							S_BBS_ID,			
+								I_BBS_IDX,			
+								I_FILE_IDX,			
+								S_LOCAL_FILEPAHT,			
+								S_SERVER_FILENAME,			
+								S_SERVER_PATH,			
+								S_FILE_TYPE,			
+								C_THUMB_YN,			
+								C_MAJOR_YN			
+							) VALUES (
+								#{bbsId},			
+								#{bbsIdx},			
+								#{fileIdx},			
+								#{localFilepaht},			
+								#{serverFilename},			
+								#{serverPath},			
+								#{fileType},			
+								#{thumbYn},			
+								#{majorYn}			
+							)
+		<!--
+		<selectKey keyProperty="bbsId" resultType="String" order="BEFORE">
+			SELECT IFNULL(MAX(S_BBS_ID), 0) + 1
+			  FROM bbs_file
+			<where>
+				<if test="bbsId != null and bbsId != ''">
+					AND S_BBS_ID = #{bbsId}
+				</if>
+				<if test="bbsIdx != null and bbsIdx != ''">
+					AND I_BBS_IDX = #{bbsIdx}
+				</if>
+				<if test="fileIdx != null and fileIdx != ''">
+					AND I_FILE_IDX = #{fileIdx}
+				</if>
+			</where>
+		</selectKey>
+		-->
+	</insert>
+    
+    <update id="updateBbsFile" parameterType="BbsFileBean">
+	<!-- bbs_file 의 상세 내용 수정 -->
+		UPDATE bbs_file
+		<set>
+			<if test="bbsId != null">S_BBS_ID = #{bbsId},</if>
+			<if test="bbsIdx != null">I_BBS_IDX = #{bbsIdx},</if>
+			<if test="fileIdx != null">I_FILE_IDX = #{fileIdx},</if>
+			<if test="localFilepaht != null">S_LOCAL_FILEPAHT = #{localFilepaht},</if>
+			<if test="serverFilename != null">S_SERVER_FILENAME = #{serverFilename},</if>
+			<if test="serverPath != null">S_SERVER_PATH = #{serverPath},</if>
+			<if test="fileType != null">S_FILE_TYPE = #{fileType},</if>
+			<if test="thumbYn != null">C_THUMB_YN = #{thumbYn},</if>
+			<if test="majorYn != null">C_MAJOR_YN = #{majorYn},</if>
+		</set>
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="fileIdx != null and fileIdx != ''">
+				AND I_FILE_IDX = #{fileIdx}
+			</if>
+		</where>
+    </update>
+    
+    <delete id="deleteBbsFile" parameterType="BbsFileBean">
+	<!-- bbs_file 의 내용 삭제 -->
+		DELETE FROM bbs_file 
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="fileIdx != null and fileIdx != ''">
+				AND I_FILE_IDX = #{fileIdx}
+			</if>
+		</where>
+    </delete>    
+    
+</mapper>

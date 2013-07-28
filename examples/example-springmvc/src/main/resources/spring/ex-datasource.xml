@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		p:url="#{info['jdbc.url']}" p:driverClassName="#{info['jdbc.driverClassName']}"
+		p:username="#{info['jdbc.username']}" p:password="#{info['jdbc.password']}"
+		p:validationQuery="SELECT 1 FROM DUAL" p:maxWait="1000" p:testOnBorrow="true"/>
+		
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:configLocation="classpath:/mybatis/mybatis-config.xml"
+		p:dataSource-ref="dataSource"
+		p:mapperLocations="classpath:/mybatis/mappers/**/*Mapper.xml"
+		p:typeAliasesPackage="com.jpl.garage.example.springmvc.vo" />
+		
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:annotationClass="org.springframework.stereotype.Repository"
+		p:basePackage="com.jpl.garage.example.springmvc.dao"
+		p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
+</beans>

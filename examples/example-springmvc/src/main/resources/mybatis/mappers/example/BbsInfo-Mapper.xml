@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jpl.garage.example.springmvc.dao.example.BbsInfoDao">
+
+	<resultMap id="bbsInfoResult" type="BbsInfoBean">
+		<id property="bbsId" column="S_BBS_ID" javaType="java.lang.String"/>
+		<result property="bbsName" column="S_BBS_NAME" javaType="java.lang.String"/>
+		<result property="bbsType" column="C_BBS_TYPE" javaType="java.lang.String"/>
+		<result property="useYn" column="C_USE_YN" javaType="java.lang.String"/>
+		<result property="emailYn" column="C_EMAIL_YN" javaType="java.lang.String"/>
+		<result property="noticeYn" column="C_NOTICE_YN" javaType="java.lang.String"/>
+		<result property="hotIconCount" column="I_HOT_ICON_COUNT" javaType="int"/>
+		<result property="newIconDay" column="I_NEW_ICON_DAY" javaType="int"/>
+		<result property="popupYn" column="C_POPUP_YN" javaType="java.lang.String"/>
+		<result property="openYn" column="C_OPEN_YN" javaType="java.lang.String"/>
+		<result property="voteYn" column="C_VOTE_YN" javaType="java.lang.String"/>
+		<result property="replyYn" column="C_REPLY_YN" javaType="java.lang.String"/>
+		<result property="commentYn" column="C_COMMENT_YN" javaType="java.lang.String"/>
+		<result property="htmlYn" column="C_HTML_YN" javaType="java.lang.String"/>
+		<result property="wasteYn" column="C_WASTE_YN" javaType="java.lang.String"/>
+		<result property="dateFormat" column="S_DATE_FORMAT" javaType="java.lang.String"/>
+		<result property="listCount" column="I_LIST_COUNT" javaType="int"/>
+		<result property="fileCount" column="I_FILE_COUNT" javaType="int"/>
+		<result property="fileSize" column="I_FILE_SIZE" javaType="int"/>
+		<result property="header" column="S_HEADER" javaType="java.lang.String"/>
+		<result property="headDesc" column="S_HEAD_DESC" javaType="java.lang.String"/>
+		<result property="tailDesc" column="S_TAIL_DESC" javaType="java.lang.String"/>
+		<result property="create" column="D_CREATE" javaType="java.util.Date"/>
+	</resultMap>
+
+	<select id="getBbsInfoList" parameterType="BbsInfoBean" resultMap="bbsInfoResult">
+	<!-- bbs_info 의 목록 -->
+		SELECT S_BBS_ID,
+			   S_BBS_NAME,
+			   C_BBS_TYPE,
+			   C_USE_YN,
+			   C_EMAIL_YN,
+			   C_NOTICE_YN,
+			   I_HOT_ICON_COUNT,
+			   I_NEW_ICON_DAY,
+			   C_POPUP_YN,
+			   C_OPEN_YN,
+			   C_VOTE_YN,
+			   C_REPLY_YN,
+			   C_COMMENT_YN,
+			   C_HTML_YN,
+			   C_WASTE_YN,
+			   S_DATE_FORMAT,
+			   I_LIST_COUNT,
+			   I_FILE_COUNT,
+			   I_FILE_SIZE,
+			   S_HEADER,
+			   S_HEAD_DESC,
+			   S_TAIL_DESC,
+			   D_CREATE
+		  FROM bbs_info
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+		</where>
+	</select>
+    
+	<select id="getBbsInfoItem" parameterType="BbsInfoBean" resultMap="bbsInfoResult">
+	<!-- bbs_info 의 상세 내역 -->
+		SELECT S_BBS_ID,
+			   S_BBS_NAME,
+			   C_BBS_TYPE,
+			   C_USE_YN,
+			   C_EMAIL_YN,
+			   C_NOTICE_YN,
+			   I_HOT_ICON_COUNT,
+			   I_NEW_ICON_DAY,
+			   C_POPUP_YN,
+			   C_OPEN_YN,
+			   C_VOTE_YN,
+			   C_REPLY_YN,
+			   C_COMMENT_YN,
+			   C_HTML_YN,
+			   C_WASTE_YN,
+			   S_DATE_FORMAT,
+			   I_LIST_COUNT,
+			   I_FILE_COUNT,
+			   I_FILE_SIZE,
+			   S_HEADER,
+			   S_HEAD_DESC,
+			   S_TAIL_DESC,
+			   D_CREATE
+		  FROM bbs_info
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+		</where>
+	</select>
+    
+	<insert id="insertBbsInfo" parameterType="BbsInfoBean">
+	<!-- bbs_info 의 신규 등록 -->
+		INSERT INTO bbs_info (
+							S_BBS_ID,			
+								S_BBS_NAME,			
+								C_BBS_TYPE,			
+								C_USE_YN,			
+								C_EMAIL_YN,			
+								C_NOTICE_YN,			
+								I_HOT_ICON_COUNT,			
+								I_NEW_ICON_DAY,			
+								C_POPUP_YN,			
+								C_OPEN_YN,			
+								C_VOTE_YN,			
+								C_REPLY_YN,			
+								C_COMMENT_YN,			
+								C_HTML_YN,			
+								C_WASTE_YN,			
+								S_DATE_FORMAT,			
+								I_LIST_COUNT,			
+								I_FILE_COUNT,			
+								I_FILE_SIZE,			
+								S_HEADER,			
+								S_HEAD_DESC,			
+								S_TAIL_DESC,			
+								D_CREATE			
+							) VALUES (
+								#{bbsId},			
+								#{bbsName},			
+								#{bbsType},			
+								#{useYn},			
+								#{emailYn},			
+								#{noticeYn},			
+								#{hotIconCount},			
+								#{newIconDay},			
+								#{popupYn},			
+								#{openYn},			
+								#{voteYn},			
+								#{replyYn},			
+								#{commentYn},			
+								#{htmlYn},			
+								#{wasteYn},			
+								#{dateFormat},			
+								#{listCount},			
+								#{fileCount},			
+								#{fileSize},			
+								#{header},			
+								#{headDesc},			
+								#{tailDesc},			
+								#{create}			
+							)
+		<!--
+		<selectKey keyProperty="bbsId" resultType="String" order="BEFORE">
+			SELECT IFNULL(MAX(S_BBS_ID), 0) + 1
+			  FROM bbs_info
+			<where>
+				<if test="bbsId != null and bbsId != ''">
+					AND S_BBS_ID = #{bbsId}
+				</if>
+			</where>
+		</selectKey>
+		-->
+	</insert>
+    
+    <update id="updateBbsInfo" parameterType="BbsInfoBean">
+	<!-- bbs_info 의 상세 내용 수정 -->
+		UPDATE bbs_info
+		<set>
+			<if test="bbsId != null">S_BBS_ID = #{bbsId},</if>
+			<if test="bbsName != null">S_BBS_NAME = #{bbsName},</if>
+			<if test="bbsType != null">C_BBS_TYPE = #{bbsType},</if>
+			<if test="useYn != null">C_USE_YN = #{useYn},</if>
+			<if test="emailYn != null">C_EMAIL_YN = #{emailYn},</if>
+			<if test="noticeYn != null">C_NOTICE_YN = #{noticeYn},</if>
+			<if test="hotIconCount != null">I_HOT_ICON_COUNT = #{hotIconCount},</if>
+			<if test="newIconDay != null">I_NEW_ICON_DAY = #{newIconDay},</if>
+			<if test="popupYn != null">C_POPUP_YN = #{popupYn},</if>
+			<if test="openYn != null">C_OPEN_YN = #{openYn},</if>
+			<if test="voteYn != null">C_VOTE_YN = #{voteYn},</if>
+			<if test="replyYn != null">C_REPLY_YN = #{replyYn},</if>
+			<if test="commentYn != null">C_COMMENT_YN = #{commentYn},</if>
+			<if test="htmlYn != null">C_HTML_YN = #{htmlYn},</if>
+			<if test="wasteYn != null">C_WASTE_YN = #{wasteYn},</if>
+			<if test="dateFormat != null">S_DATE_FORMAT = #{dateFormat},</if>
+			<if test="listCount != null">I_LIST_COUNT = #{listCount},</if>
+			<if test="fileCount != null">I_FILE_COUNT = #{fileCount},</if>
+			<if test="fileSize != null">I_FILE_SIZE = #{fileSize},</if>
+			<if test="header != null">S_HEADER = #{header},</if>
+			<if test="headDesc != null">S_HEAD_DESC = #{headDesc},</if>
+			<if test="tailDesc != null">S_TAIL_DESC = #{tailDesc},</if>
+			<if test="create != null">D_CREATE = #{create},</if>
+		</set>
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+		</where>
+    </update>
+    
+    <delete id="deleteBbsInfo" parameterType="BbsInfoBean">
+	<!-- bbs_info 의 내용 삭제 -->
+		DELETE FROM bbs_info 
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+		</where>
+    </delete>    
+    
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jpl.garage.example.springmvc.dao.example.BbsDataDao">
+
+	<resultMap id="bbsDataResult" type="BbsDataBean">
+		<id property="bbsId" column="S_BBS_ID" javaType="string"/>
+		<id property="bbsIdx" column="I_BBS_IDX" javaType="int"/>
+		<result property="parentIdx" column="I_PARENT_IDX" javaType="int"/>
+		<result property="idxLeft" column="I_IDX_LEFT" javaType="int"/>
+		<result property="idxRight" column="I_IDX_RIGHT" javaType="int"/>
+		<result property="bbsTitle" column="S_BBS_TITLE" javaType="string"/>
+		<result property="bbsDesc" column="S_BBS_DESC" javaType="string"/>
+	</resultMap>
+	
+	<resultMap id="bbsDataExResult" extends="bbsDataResult" type="BbsDataBean">
+		<association property="bbsInfoBean" column="{bbsId=S_BBS_ID}"
+			select="com.jpl.garage.example.springmvc.dao.example.BbsInfoDao.getBbsInfoItem"/>
+		<collection property="bbsFileBeans" ofType="BbsFileBean" column="{bbsId=S_BBS_ID,bbsIdx=I_BBS_IDX}"
+			select="com.jpl.garage.example.springmvc.dao.example.BbsFileDao.getBbsFileList"/>
+		<collection property="bbsCommentBeans" ofType="BbsCommentBean" column="{bbsId=S_BBS_ID,bbsIdx=I_BBS_IDX}"
+			select="com.jpl.garage.example.springmvc.dao.example.BbsCommentDao.getBbsCommentList"/>
+	</resultMap>	
+
+	<select id="getBbsDataList" parameterType="BbsDataBean" resultMap="bbsDataResult">
+	<!-- bbs_data 의 목록 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_PARENT_IDX,
+			   I_IDX_LEFT,
+			   I_IDX_RIGHT,
+			   S_BBS_TITLE,
+			   S_BBS_DESC
+		  FROM bbs_data
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+		</where>
+	</select>
+    
+	<select id="getBbsDataItem" parameterType="BbsDataBean" resultMap="bbsDataExResult">
+	<!-- bbs_data 의 상세 내역 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_PARENT_IDX,
+			   I_IDX_LEFT,
+			   I_IDX_RIGHT,
+			   S_BBS_TITLE,
+			   S_BBS_DESC
+		  FROM bbs_data
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+		</where>
+	</select>
+	
+	<resultMap id="bbsDataEx2Result" extends="bbsDataResult" type="BbsDataBean">
+		<association property="bbsInfoBean" column="{bbsId=S_BBS_ID}"
+			select="com.jpl.garage.example.springmvc.dao.example.BbsInfoDao.getBbsInfoItem"/>
+		<collection property="bbsFileBeans" ofType="BbsFileBean" column="{bbsId=S_BBS_ID,bbsIdx=I_BBS_IDX}"
+			resultMap="com.jpl.garage.example.springmvc.dao.example.BbsFileDao.bbsFileResult"/>
+		<collection property="bbsCommentBeans" ofType="BbsCommentBean" column="{bbsId=S_BBS_ID,bbsIdx=I_BBS_IDX}"
+			resultMap="com.jpl.garage.example.springmvc.dao.example.BbsCommentDao.bbsCommentResult"/>		
+	</resultMap>
+
+	<select id="getBbsDataItem2" parameterType="BbsDataBean" resultMap="bbsDataEx2Result">
+		SELECT *
+		  FROM bbs_data a
+		  	LEFT OUTER JOIN bbs_file c
+		  		ON a.S_BBS_ID = c.S_BBS_ID
+		  		AND a.I_BBS_IDX = c.I_BBS_IDX
+		  	LEFT OUTER JOIN bbs_comment d
+		  		ON a.S_BBS_ID = d.S_BBS_ID
+		  		AND a.I_BBS_IDX = d.I_BBS_IDX
+		 <where> 
+			<if test="bbsId != null and bbsId != ''">
+				AND a.S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND a.I_BBS_IDX = #{bbsIdx}
+			</if>
+		</where>	  
+	</select>	
+	
+	<insert id="insertBbsData" parameterType="BbsDataBean">
+		<selectKey keyProperty="bbsIdx" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(I_BBS_IDX), 0) + 1
+			  FROM bbs_data
+			WHERE S_BBS_ID = #{bbsId}
+		</selectKey>
+	<!-- bbs_data 의 신규 등록 -->
+		INSERT INTO bbs_data (
+							S_BBS_ID,			
+								I_BBS_IDX,			
+								I_PARENT_IDX,			
+								I_IDX_LEFT,			
+								I_IDX_RIGHT,			
+								S_BBS_TITLE,			
+								S_BBS_DESC			
+							) VALUES (
+								#{bbsId},			
+								#{bbsIdx},			
+								#{parentIdx},			
+								#{idxLeft},			
+								#{idxRight},			
+								#{bbsTitle},			
+								#{bbsDesc}			
+							)
+	</insert>
+    
+    <update id="updateBbsData" parameterType="BbsDataBean">
+	<!-- bbs_data 의 상세 내용 수정 -->
+		UPDATE bbs_data
+		<set>
+			<if test="bbsId != null">S_BBS_ID = #{bbsId},</if>
+			<if test="bbsIdx != null">I_BBS_IDX = #{bbsIdx},</if>
+			<if test="parentIdx != null">I_PARENT_IDX = #{parentIdx},</if>
+			<if test="idxLeft != null">I_IDX_LEFT = #{idxLeft},</if>
+			<if test="idxRight != null">I_IDX_RIGHT = #{idxRight},</if>
+			<if test="bbsTitle != null">S_BBS_TITLE = #{bbsTitle},</if>
+			<if test="bbsDesc != null">S_BBS_DESC = #{bbsDesc},</if>
+		</set>
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+		</where>
+    </update>
+    
+    <delete id="deleteBbsData" parameterType="BbsDataBean">
+	<!-- bbs_data 의 내용 삭제 -->
+		DELETE FROM bbs_data 
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+		</where>
+    </delete>    
+    
+    
+    
+</mapper>

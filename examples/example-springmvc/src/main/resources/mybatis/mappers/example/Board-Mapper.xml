@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jpl.garage.example.springmvc.dao.example.BoardDao">
+
+	<select id="sample_hashmap" parameterType="hashmap" resultType="hashmap">
+	<!-- hashmap 을 이용하는 sample -->
+		SELECT A.S_BBS_ID,
+			   A.S_BBS_NAME,
+			   B.I_BBS_IDX,
+			   B.S_BBS_TITLE,
+			   B.S_BBS_DESC,
+			   A.D_CREATE
+		  FROM bbs_info A, bbs_data B
+		 <where>
+			A.S_BBS_ID = B.S_BBS_ID
+			<if test="bbsId != null and bbsID != ''">
+			AND A.S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != 0">
+			AND B.I_BBS_IDX = #{bbsIdx}
+			</if>
+		 </where>
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jpl.garage.example.springmvc.dao.example.BbsCommentDao">
+
+	<resultMap id="bbsCommentResult" type="BbsCommentBean">
+		<id property="bbsId" column="S_BBS_ID" javaType="java.lang.String"/>
+		<id property="bbsIdx" column="I_BBS_IDX" javaType="int"/>
+		<id property="commentIdx" column="I_COMMENT_IDX" javaType="int"/>
+		<result property="comment" column="S_COMMENT" javaType="java.lang.String"/>
+	</resultMap>
+
+	<select id="getBbsCommentList" parameterType="BbsCommentBean" resultMap="bbsCommentResult">
+	<!-- bbs_comment 의 목록 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_COMMENT_IDX,
+			   S_COMMENT
+		  FROM bbs_comment
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="commentIdx != null and commentIdx != ''">
+				AND I_COMMENT_IDX = #{commentIdx}
+			</if>
+		</where>
+	</select>
+    
+	<select id="getBbsCommentItem" parameterType="BbsCommentBean" resultMap="bbsCommentResult">
+	<!-- bbs_comment 의 상세 내역 -->
+		SELECT S_BBS_ID,
+			   I_BBS_IDX,
+			   I_COMMENT_IDX,
+			   S_COMMENT
+		  FROM bbs_comment
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="commentIdx != null and commentIdx != ''">
+				AND I_COMMENT_IDX = #{commentIdx}
+			</if>
+		</where>
+	</select>
+    
+	<insert id="insertBbsComment" parameterType="BbsCommentBean">
+	<!-- bbs_comment 의 신규 등록 -->
+		INSERT INTO bbs_comment (
+							S_BBS_ID,			
+								I_BBS_IDX,			
+								I_COMMENT_IDX,			
+								S_COMMENT			
+							) VALUES (
+								#{bbsId},			
+								#{bbsIdx},			
+								#{commentIdx},			
+								#{comment}			
+							)
+		<!--
+		<selectKey keyProperty="bbsId" resultType="String" order="BEFORE">
+			SELECT IFNULL(MAX(S_BBS_ID), 0) + 1
+			  FROM bbs_comment
+			<where>
+				<if test="bbsId != null and bbsId != ''">
+					AND S_BBS_ID = #{bbsId}
+				</if>
+				<if test="bbsIdx != null and bbsIdx != ''">
+					AND I_BBS_IDX = #{bbsIdx}
+				</if>
+				<if test="commentIdx != null and commentIdx != ''">
+					AND I_COMMENT_IDX = #{commentIdx}
+				</if>
+			</where>
+		</selectKey>
+		-->
+	</insert>
+    
+    <update id="updateBbsComment" parameterType="BbsCommentBean">
+	<!-- bbs_comment 의 상세 내용 수정 -->
+		UPDATE bbs_comment
+		<set>
+			<if test="bbsId != null">S_BBS_ID = #{bbsId},</if>
+			<if test="bbsIdx != null">I_BBS_IDX = #{bbsIdx},</if>
+			<if test="commentIdx != null">I_COMMENT_IDX = #{commentIdx},</if>
+			<if test="comment != null">S_COMMENT = #{comment},</if>
+		</set>
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="commentIdx != null and commentIdx != ''">
+				AND I_COMMENT_IDX = #{commentIdx}
+			</if>
+		</where>
+    </update>
+    
+    <delete id="deleteBbsComment" parameterType="BbsCommentBean">
+	<!-- bbs_comment 의 내용 삭제 -->
+		DELETE FROM bbs_comment 
+		<where>
+			<if test="bbsId != null and bbsId != ''">
+				AND S_BBS_ID = #{bbsId}
+			</if>
+			<if test="bbsIdx != null and bbsIdx != ''">
+				AND I_BBS_IDX = #{bbsIdx}
+			</if>
+			<if test="commentIdx != null and commentIdx != ''">
+				AND I_COMMENT_IDX = #{commentIdx}
+			</if>
+		</where>
+    </delete>    
+    
+</mapper>

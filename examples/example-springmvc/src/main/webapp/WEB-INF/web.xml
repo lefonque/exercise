@@ -13,13 +13,16 @@
 	</filter>
 	<filter>
 		<filter-name>sitemeshFilter</filter-name>
-		<filter-class></filter-class>
+		<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<servlet-name>example servlet</servlet-name>
 	</filter-mapping>
-	
+	<filter-mapping>
+		<filter-name>sitemeshFilter</filter-name>
+		<servlet-name>example servlet</servlet-name>
+	</filter-mapping>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
