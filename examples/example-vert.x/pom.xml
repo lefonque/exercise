@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.jpl.garage</groupId>
+    <artifactId>examples</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>example-vert.x</artifactId>
+  
+  <dependencies>
+	<dependency>
+	    <groupId>org.vert-x</groupId>
+	    <artifactId>vertx-lang-java</artifactId>
+	    <version>1.3.1.final</version>
+	    <exclusions>
+	    	<exclusion>
+	    		<artifactId>slf4j-api</artifactId>
+	    		<groupId>org.slf4j</groupId>
+	    	</exclusion>
+	    </exclusions>
+	</dependency>
+	
+	
+	<dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.0.11</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+  	<plugins>
+  		<plugin>
+		    <groupId>org.anacoders.plugins</groupId>
+		    <artifactId>vertx-maven-plugin</artifactId>
+		    <version>1.2.3.4</version>
+		    <configuration>
+		        <verticleName>com.jpl.garage.vertx.PoorServerVertical</verticleName>
+		    </configuration>
+		</plugin>
+  	</plugins>
+  </build>
+</project>

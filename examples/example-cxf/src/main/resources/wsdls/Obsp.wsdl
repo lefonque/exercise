@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.cxf.garage.jpl.com/Obsp/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Obsp" targetNamespace="http://www.cxf.garage.jpl.com/Obsp/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.cxf.garage.jpl.com/Obsp/">
+      <xsd:element name="service">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="arg0" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+          	<xsd:element name="arg1" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="serviceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="serviceRequest">
+    <wsdl:part element="tns:service" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="serviceResponse">
+    <wsdl:part element="tns:serviceResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="ObspInfo">
+    <wsdl:operation name="service">
+      <wsdl:input message="tns:serviceRequest"/>
+      <wsdl:output message="tns:serviceResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ObspSOAP" type="tns:ObspInfo">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="service">
+      <soap:operation soapAction="http://www.cxf.garage.jpl.com/Obsp/service"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ObspInfo">
+    <wsdl:port binding="tns:ObspSOAP" name="ObspInfoPort">
+      <soap:address location="http://localhost:8100/cxf/Obsp"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
