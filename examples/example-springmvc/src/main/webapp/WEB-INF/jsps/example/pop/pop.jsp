@@ -14,7 +14,6 @@ $(document).ready(function(){
 <c:if test="${not empty message}">
 	alert('${message}');
 	window.returnValue = {'successful':true};
-	window.close();
 </c:if>
 	$('#btnSave').bind('click',function(){
 		$('#bulletinInfo').attr('action','<c:url value="/example/bulletin/pop/save"/>');
