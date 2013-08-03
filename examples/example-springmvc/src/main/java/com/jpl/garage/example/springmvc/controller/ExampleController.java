@@ -57,7 +57,7 @@ public class ExampleController {
 		case update:
 			break;
 		}
-		
+		bulletinInfo.setMode(SimpleEnum.update);
 		model.addAttribute("message","successful");
 		return result;
 	}
