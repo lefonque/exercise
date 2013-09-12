@@ -1,7 +1,14 @@
 package com.jpl.garage.example.springmvc.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +86,59 @@ public class ExampleController {
 		attr.addFlashAttribute("bulletinInfo", bulletinInfo);
 		
 		return result;
+	}
+	
+	
+	@RequestMapping("/example/autocomplete")
+	public String autocomplete(Model model){
+		String result = "example/autocomplete";
+		
+		
+		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+		Map<String,String> one = new HashMap<String,String>();
+		one.put("value","ID-A");
+		one.put("label","Name-A");
+		list.add(one);
+		
+		one = new HashMap<String,String>();
+		one.put("value","ID-B");
+		one.put("label","Name-B");
+		list.add(one);
+		
+		String json = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			json = mapper.writeValueAsString(list);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("json", json);
+		return result;
+	}
+
+	class TestData{
+		private String label;
+		private String value;
+		
+		public String getLabel() {
+			return label;
+		}
+		public void setLabel(String label) {
+			this.label = label;
+		}
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		
 	}
 }
